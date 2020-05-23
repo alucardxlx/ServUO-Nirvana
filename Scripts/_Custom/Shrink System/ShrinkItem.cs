@@ -15,6 +15,7 @@ using Server.ContextMenus;
 using Xanthos.Utilities;
 using Xanthos.Interfaces;
 using Server.Regions;
+using VitaNex.Network;
 
 namespace Xanthos.ShrinkSystem
 {
@@ -219,39 +220,63 @@ namespace Xanthos.ShrinkSystem
 			}
 		}
 
-		public override void AddNameProperties( ObjectPropertyList list )
-		{
-			base.AddNameProperties( list );
 
-			if ( null == m_Pet || m_Pet.Deleted )
-				return;
 
-			if ( !m_PropsLoaded )
-				PreloadProperties();
+        public override void GetProperties(ObjectPropertyList list)
+        {
+            ExtendedOPL opl = new ExtendedOPL(list); // Wrap the ObjectPropertyList
+            base.GetProperties(list);
 
-			if ( m_IsBonded && ShrinkConfig.BlessStatus.None == ShrinkConfig.LootStatus )	// Only show bonded when the item is not blessed
-				list.Add( 1049608 );
+            if (null == m_Pet || m_Pet.Deleted)
+                return;
 
-			if ( ShrinkConfig.AllowLocking || m_Locked )	// Only show lock status when locking enabled or already locked
-				list.Add( 1049644, ( m_Locked == true ) ? "Locked" : "Unlocked" );
-		
-			if ( ShrinkConfig.ShowPetDetails )
-			{
-				list.Add( 1060663, "Name\t{0} Breed: {1} Gender: {2}", m_Name, m_Breed, m_Gender );
-				list.Add( 1061640, ( null == m_Owner ) ? "nobody (WILD)" : m_Owner.Name ); // Owner: ~1_OWNER~
-				list.Add( 1060659, "Stats\tStrength {0}, Dexterity {1}, Intelligence {2}", m_RawStr, m_RawDex, m_RawInt );
-				list.Add( 1060660, "Combat Skills\tWrestling {0}, Tactics {1}, Anatomy {2}, Poisoning {3}", m_Wrestling, m_Tactics, m_Anatomy, m_Poisoning );
-				list.Add( 1060661, "Magic Skills\tMagery {0}, Eval Intel {1}, Magic Resist {2}, Meditation {3}", m_Magery, m_EvalInt, m_MagicResist, m_Meditation );
-				if ( !( 0 == m_Parry && 0 == m_Archery ))
-					list.Add( 1060661, "Weapon Skills\tArchery {0}, Fencing {1}, Macing {2}, Parry {3}, Swords {4}", m_Archery, m_Fencing, m_Macing, m_Parry, m_Swords );
-				if ( m_EvoEp > 0 )
-					list.Add( 1060662, "EP\t{0}, Stage: {1}", m_EvoEp, m_EvoStage + 1 );
-			}
-			else
-				list.Add( 1060663, "Name\t{0}", m_Name );
-		}
+            if (!m_PropsLoaded)
+                PreloadProperties();
 
-		private void PreloadProperties()
+            if (ShrinkConfig.AllowLocking || m_Locked)  // Only show lock status when locking enabled or already locked
+                opl.Add((m_Locked == true) ? "Locked" : "Unlocked");
+
+            if (ShrinkConfig.ShowPetDetails)
+            {
+                opl.Add(" ");
+                opl.Add("Info".WrapUOHtmlColor(System.Drawing.Color.Yellow));
+                opl.Add("Name: {0}", m_Name);
+                opl.Add("Breed: {0}", m_Breed);
+                opl.Add("Gender: {0}", m_Gender);
+                opl.Add((null == m_Owner) ? "Nobody (WILD)" : "Owner: {0}", m_Owner.Name); // Owner: ~1_OWNER~
+                opl.Add("Stats".WrapUOHtmlColor(System.Drawing.Color.Yellow));
+                opl.Add("Strength: {0}", m_RawStr);
+                opl.Add("Dexterity: {0}", m_RawDex);
+                opl.Add("Intelligence: {0}", m_RawInt);
+                opl.Add("Combat Skills".WrapUOHtmlColor(System.Drawing.Color.Yellow));
+                opl.Add("Wrestling: {0}", m_Wrestling);
+                opl.Add("Tactics: {0}", m_Tactics);
+                opl.Add("Anatomy: {0}", m_Anatomy);
+                opl.Add("Poisoning: {0}", m_Poisoning);
+                opl.Add("Magic Skills".WrapUOHtmlColor(System.Drawing.Color.Yellow));
+                opl.Add("Magery: {0}", m_Magery);
+                opl.Add("Eval Intel: {0}", m_EvalInt);
+                opl.Add("Magic Resist: {0}", m_MagicResist);
+                opl.Add("Meditation: {0}", m_Meditation);
+
+                if (!(0 == m_Parry && 0 == m_Archery))
+                {
+                    opl.Add("Weapon Skills".WrapUOHtmlColor(System.Drawing.Color.Yellow));
+                    opl.Add("Archery: {0}", m_Archery);
+                    opl.Add("Fencing: {0}", m_Fencing);
+                    opl.Add("Macing: {0}", m_Macing);
+                    opl.Add("Parry: {0}", m_Parry);
+                    opl.Add("Swords: {0}", m_Swords);
+                }
+            }
+            else
+                opl.Add("Name: {0}", m_Name.WrapUOHtmlColor(System.Drawing.Color.Yellow));
+
+            opl.Apply(); // Apply the changes to the list
+        }
+
+
+        private void PreloadProperties()
 		{
 			if ( null == m_Pet )
 				return;
