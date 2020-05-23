@@ -43,16 +43,16 @@ namespace Server.Engines.Harvest
             HarvestDefinition fish = new HarvestDefinition();
 
             // Resource banks are every 8x8 tiles
-            fish.BankWidth = 8;
-            fish.BankHeight = 8;
+            fish.BankWidth = 4;
+            fish.BankHeight = 4;
 
             // Every bank holds from 5 to 15 fish
-            fish.MinTotal = 5;
-            fish.MaxTotal = 15;
+            fish.MinTotal = 15;
+            fish.MaxTotal = 25;
 
             // A resource bank will respawn its content every 10 to 20 minutes
-            fish.MinRespawn = TimeSpan.FromMinutes(10.0);
-            fish.MaxRespawn = TimeSpan.FromMinutes(20.0);
+            fish.MinRespawn = TimeSpan.FromMinutes(5.0);
+            fish.MaxRespawn = TimeSpan.FromMinutes(10.0);
 
             // Skill checking is done on the Fishing skill
             fish.Skill = SkillName.Fishing;
@@ -63,7 +63,7 @@ namespace Server.Engines.Harvest
             fish.RangedTiles = true;
 
             // Players must be within 4 tiles to harvest
-            fish.MaxRange = 4;
+            fish.MaxRange = 6;
 
             // One fish per harvest action
             fish.ConsumedPerHarvest = 1;
