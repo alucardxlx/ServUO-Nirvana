@@ -3249,8 +3249,8 @@ namespace Server
             //if (Unwieldly > 0)
             //    list.Add(1154909);
 
-            if (Antique > 0)
-                list.Add(1076187);
+            // if (Antique > 0)
+            //     list.Add(1076187);
         }
 
         public const double CombatDecayChance = 0.02;
