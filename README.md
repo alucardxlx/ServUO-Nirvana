@@ -1,4 +1,4 @@
-# [Nirvana]
+# Nirvana
 
 [![Build Status](https://travis-ci.com/ServUO/ServUO.svg?branch=master)](https://travis-ci.com/ServUO/ServUO)
 [![GitHub issues](https://img.shields.io/github/issues/servuo/servuo.svg)](https://github.com/ServUO/ServUO/issues)
@@ -9,7 +9,7 @@
 [![GitHub](https://img.shields.io/github/license/servuo/servuo.svg?color=a)](https://github.com/ServUO/ServUO/blob/master/LICENSE)
 
 
-ServUO is a community driven Ultima Online Server Emulator written in C#.
+[ServUO] is a community driven Ultima Online Server Emulator written in C#.
 
 
 
@@ -17,3 +17,6 @@ License
 ----
 
 GPL v2
+
+
+   [ServUO]: <https://www.servuo.com>
